@@ -1,0 +1,3 @@
+# Data (both datasets group and public)
+data/*
+!data/README.md
