@@ -28,9 +28,9 @@ VALID_POSITIONS = {"pocket", "waist", "hand"}
 MANIFEST_COLUMNS = ["recording_id", "folder", "participant", "activity",
                     "position", "device", "platform", "notes"]
 
-# acc_to_g should be 1.0 on android and -1.0 on iPhone
 SENSOR_FILES = {
-    "ios": {"acc": "AccelerometerUncalibrated.csv", "gyro": "Gyroscope.csv", "acc_to_g": -1.0},
+    "ios":     {"acc": "AccelerometerUncalibrated.csv", "gyro": "Gyroscope.csv", "acc_to_g": -1.0},
+    "android": {"acc": "AccelerometerUncalibrated.csv", "gyro": "Gyroscope.csv", "acc_to_g": 1 / 9.80665},
 }
 
 OUTPUT_COLUMNS = (
