@@ -15,7 +15,12 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "processed"
 OUTPUT_PATH = OUTPUT_DIR / "group_combined.csv"
 LOG_PATH = OUTPUT_DIR / "group_build_log.csv"
 
-TRIM_SECONDS = 4.0             # removed from the start and end of every recording
+TRIM_SECONDS = {
+    "walking": 4.0,
+    "walking_upstairs": 2.5,
+    "walking_downstairs": 2.5,
+}
+
 EXPECTED_RATE_HZ = 50
 RATE_TOLERANCE_HZ = 5
 GAP_THRESHOLD_S = 0.05         # report any gap between readings longer than this (mmight be an issue with android)
@@ -185,11 +190,12 @@ def process_recording(row):
     log["rows_unmatched"] = int(merged[["gyro_x", "gyro_y", "gyro_z"]].isna().any(axis=1).sum())
     merged = merged.dropna()
 
-    # Trim the start and end (putting the phone in and taking it out of position)
-    start = merged["seconds_elapsed"].min() + TRIM_SECONDS
-    end = merged["seconds_elapsed"].max() - TRIM_SECONDS
+    # Trim the start and end (removing the extra noise)
+    trim = TRIM_SECONDS[row["activity"]]
+    start = merged["seconds_elapsed"].min() + trim
+    end = merged["seconds_elapsed"].max() - trim
     if end <= start:
-        warnings.append(f"Recording is too short to trim {TRIM_SECONDS:g} s from each end")
+        warnings.append(f"Recording is too short to trim {trim:g} s from each end")
         return None, log, warnings
     before = len(merged)
     merged = merged[(merged["seconds_elapsed"] >= start) & (merged["seconds_elapsed"] <= end)]
