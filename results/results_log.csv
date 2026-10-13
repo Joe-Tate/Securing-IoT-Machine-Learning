@@ -1,0 +1,2 @@
+run_id,model,train_data,test_data,train_windows,test_windows,train_walking,train_walking_upstairs,train_walking_downstairs,accuracy,macro_f1,f1_walking,f1_walking_upstairs,f1_walking_downstairs,notes
+2026-10-13_16-02-57,Random Forest,UCI train,UCI test,3285,1387,1226,1073,986,0.8854,0.8853,0.8891,0.8808,0.8861,first model on uci dataset
